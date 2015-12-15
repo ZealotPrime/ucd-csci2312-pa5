@@ -13,7 +13,7 @@ namespace Gaming {
     protected:
         std::string __name;
         virtual void __print_args(std::ostream &os) const = 0;
-        void setName(std::string name);
+        void setName(std::string name){__name=name;}
     public:
         std::string getName() const { return __name; };
         friend std::ostream &operator<<(std::ostream &os, const GamingException &ex);
