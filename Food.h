@@ -15,8 +15,8 @@ namespace Gaming {
         static const char FOOD_ID;
 
     public:
-        Food(const Game &g, const Position &p, double capacity);
-        ~Food();
+        Food(const Game &g, const Position &p, double capacity):Resource(g,p,capacity){}
+        ~Food(){}
 
         PieceType getType() const override { return PieceType::FOOD; }
 

@@ -9,15 +9,19 @@
 
 namespace Gaming {
 
+
     class AggressiveAgentStrategy : public Strategy {
         double __agentEnergy;
 
     public:
         static const double DEFAULT_AGGRESSION_THRESHOLD;
-
+        AggressiveAgentStrategy();
         AggressiveAgentStrategy(double agentEnergy);
-        ~AggressiveAgentStrategy();
+        ~AggressiveAgentStrategy(){}
         ActionType operator()(const Surroundings &s) const override;
+
+
+        void setEnergy(double newval){__agentEnergy=newval;}
 
     };
 

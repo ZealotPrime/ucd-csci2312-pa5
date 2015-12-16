@@ -25,7 +25,7 @@ namespace Gaming {
 
     protected:
         const Game &__game; // note: a reference to the Game object
-        unsigned int __id;
+        unsigned int __id=0;
 
         virtual void print(std::ostream &os) const = 0;
 
@@ -34,7 +34,7 @@ namespace Gaming {
 
     public:
         Piece(const Game &g, const Position &p);
-        virtual ~Piece();
+        virtual ~Piece(){}
 
         const Position getPosition() const { return __position; }
         void setPosition(const Position &p) { __position = p; }

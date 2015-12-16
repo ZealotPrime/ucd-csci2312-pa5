@@ -6,14 +6,15 @@
 #define PA5GAME_DEFAULTAGENTSTRATEGY_H
 
 #include "Strategy.h"
+#include "Gaming.h"
 
 namespace Gaming {
 
     class DefaultAgentStrategy : public Strategy {
     public:
 
-        DefaultAgentStrategy();
-        ~DefaultAgentStrategy();
+        DefaultAgentStrategy(){};
+        ~DefaultAgentStrategy(){};
         ActionType operator()(const Surroundings &s) const override;
     };
 

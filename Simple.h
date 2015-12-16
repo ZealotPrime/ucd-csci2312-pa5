@@ -15,8 +15,8 @@ namespace Gaming {
         static const char SIMPLE_ID;
 
     public:
-        Simple(const Game &g, const Position &p, double energy);
-        ~Simple();
+        Simple(const Game &g, const Position &p, double energy):Agent(g,p,energy){};
+        ~Simple(){};
 
         PieceType getType() const override { return PieceType::SIMPLE; }
 

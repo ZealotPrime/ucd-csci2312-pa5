@@ -7,6 +7,8 @@
 
 #include <array>
 #include <random>
+#include <vector>
+#include "Advantage.h"
 
 namespace Gaming {
 
@@ -18,10 +20,10 @@ namespace Gaming {
     };
 
     // actions are either a motion in one of 8 directions or staying in place
-    enum ActionType { N=0, NE, NW, E, W, SE, SW, S, STAY };
+    enum ActionType { NW=0, N, NE, W, STAY, E, SW, S, SE };
 
     // what a position on the game grid can be filled with
-    enum PieceType { SIMPLE=0, STRATEGIC, FOOD, ADVANTAGE, INACCESSIBLE, SELF, EMPTY };
+    enum PieceType {AGENT=0, SIMPLE, STRATEGIC,RESOURCE, FOOD, ADVANTAGE, INACCESSIBLE, SELF, EMPTY };
 
     // a "map" of the 8 squares adjacent to a piece
     struct Surroundings {
@@ -29,9 +31,44 @@ namespace Gaming {
         // [0][1][2]
         // [3][4][5]
         // [6][7][8]
-        // the piece is always at 1x1 (SELF)
+        // the piece is always at 1x1 (4(SELF))
         std::array<PieceType, 9> array;
+
+        ActionType getMove(PieceType)const;
+
     };
+
+    ActionType Surroundings::getMove(PieceType objective)const
+    {
+        std::vector<int> targets;
+        bool special=false;
+        int count=1;
+        if(objective==RESOURCE||objective==AGENT)
+        {
+            special=true;
+            count=2;
+        }
+        for(int y=0;y<count;++y)
+        {
+            if(special)
+                ++objective;
+            for(int x=0;x<9;++x)
+            {
+                if(array[x]==objective)
+                {
+                    targets.push_back(x);
+                }
+            }
+        }
+        if(!targets.empty())
+        {
+            Position destination=PositionRandomizer()(targets);
+            return static_cast<ActionType>(destination.x+destination.y*3);
+        }
+        return STAY;
+    }
+
+
 
     class PositionRandomizer {
         std::default_random_engine __gen;
@@ -51,6 +88,7 @@ namespace Gaming {
                     (unsigned) (positionIndices[posIndex] % 3));
         }
     };
+
 
 }
 

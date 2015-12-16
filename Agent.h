@@ -19,7 +19,7 @@ namespace Gaming {
         static const double AGENT_FATIGUE_RATE;
 
         Agent(const Game &g, const Position &p, double energy);
-        ~Agent();
+        ~Agent(){};
 
         double getEnergy() const { return __energy; }
         void addEnergy(double e) { __energy += e; }
