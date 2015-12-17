@@ -6,7 +6,6 @@
 #define PA5GAME_DEFAULTAGENTSTRATEGY_H
 
 #include "Strategy.h"
-#include "Gaming.h"
 
 namespace Gaming {
 

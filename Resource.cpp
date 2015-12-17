@@ -1,8 +1,9 @@
 #include "Resource.h"
+#include "Agent.h"
 
 namespace Gaming
 {
-    Resource::RESOURCE_SPOIL_FACTOR = 1.2;
+    const double Resource::RESOURCE_SPOIL_FACTOR = 1.2;
 
     Resource::Resource(const Game &g, const Position &p, double capacity):Piece(g,p)
     {
@@ -29,6 +30,6 @@ namespace Gaming
     Piece &Resource::interact(Agent *agent)
     {
         agent->addEnergy(consume());
-        return <#initializer#>;
+        return *agent;
     }
 }

@@ -9,6 +9,7 @@
 
 #include "Game.h"
 
+
 namespace Gaming {
 
     class Resource;

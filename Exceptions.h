@@ -24,10 +24,10 @@ namespace Gaming {
         unsigned __exp_width, __exp_height, __width, __height;
     public:
         DimensionEx(unsigned expWidth, unsigned expHeight, unsigned width, unsigned height);
-        unsigned getExpWidth() const;
-        unsigned getExpHeight() const;
-        unsigned getWidth() const;
-        unsigned getHeight() const;
+        unsigned getExpWidth() const {return __exp_width;}
+        unsigned getExpHeight() const {return __exp_height;}
+        unsigned getWidth() const { return __width;}
+        unsigned getHeight() const {return __height;}
     };
 
     class InsufficientDimensionsEx : public DimensionEx {

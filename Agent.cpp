@@ -1,7 +1,7 @@
 #include "Agent.h"
 namespace Gaming
 {
-    Agent::AGENT_FATIGUE_RATE = 0.3;
+    const double Agent::AGENT_FATIGUE_RATE = 0.3;
 
     Agent::Agent(const Game &g, const Position &p, double energy):Piece(g,p)
     {

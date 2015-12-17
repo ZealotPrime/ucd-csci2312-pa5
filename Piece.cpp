@@ -11,7 +11,7 @@ namespace Gaming
         __position=p;
     }
 
-    std::ostream &Gaming::operator<<(std::ostream &os, const Piece &piece)
+    std::ostream &operator<<(std::ostream &os, const Piece &piece)
     {
         piece.print(os);
     }

@@ -8,7 +8,6 @@
 #include <array>
 #include <random>
 #include <vector>
-#include "Advantage.h"
 
 namespace Gaming {
 
@@ -24,51 +23,6 @@ namespace Gaming {
 
     // what a position on the game grid can be filled with
     enum PieceType {AGENT=0, SIMPLE, STRATEGIC,RESOURCE, FOOD, ADVANTAGE, INACCESSIBLE, SELF, EMPTY };
-
-    // a "map" of the 8 squares adjacent to a piece
-    struct Surroundings {
-        // encoded as an array/vector top-left row-wise bottom-right
-        // [0][1][2]
-        // [3][4][5]
-        // [6][7][8]
-        // the piece is always at 1x1 (4(SELF))
-        std::array<PieceType, 9> array;
-
-        ActionType getMove(PieceType)const;
-
-    };
-
-    ActionType Surroundings::getMove(PieceType objective)const
-    {
-        std::vector<int> targets;
-        bool special=false;
-        int count=1;
-        if(objective==RESOURCE||objective==AGENT)
-        {
-            special=true;
-            count=2;
-        }
-        for(int y=0;y<count;++y)
-        {
-            if(special)
-                ++objective;
-            for(int x=0;x<9;++x)
-            {
-                if(array[x]==objective)
-                {
-                    targets.push_back(x);
-                }
-            }
-        }
-        if(!targets.empty())
-        {
-            Position destination=PositionRandomizer()(targets);
-            return static_cast<ActionType>(destination.x+destination.y*3);
-        }
-        return STAY;
-    }
-
-
 
     class PositionRandomizer {
         std::default_random_engine __gen;
@@ -88,6 +42,25 @@ namespace Gaming {
                     (unsigned) (positionIndices[posIndex] % 3));
         }
     };
+
+    // a "map" of the 8 squares adjacent to a piece
+    struct Surroundings {
+        // encoded as an array/vector top-left row-wise bottom-right
+        // [0][1][2]
+        // [3][4][5]
+        // [6][7][8]
+        // the piece is always at 1x1 (4(SELF))
+        PieceType array[9];
+
+        ActionType getMove(PieceType)const;
+
+    };
+
+
+
+
+
+
 
 
 }

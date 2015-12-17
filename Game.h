@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <iomanip>
 
 #include "Gaming.h"
 #include "DefaultAgentStrategy.h"
@@ -30,6 +31,7 @@ namespace Gaming {
         static PositionRandomizer __posRandomizer;
 
         void populate(); // populate the grid (used in automatic random initialization of a Game)
+        void checkBounds(const Position& position);
 
         unsigned __numInitAgents, __numInitResources;
 
@@ -63,6 +65,7 @@ namespace Gaming {
         unsigned int getNumResources();
         Status getStatus() const { return __status; }
         unsigned int getRound() const { return __round; }
+        PieceType getSquare(const Position&)const;
 
         // grid population methods
         bool addSimple(const Position &position);

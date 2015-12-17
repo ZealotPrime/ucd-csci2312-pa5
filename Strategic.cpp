@@ -1,9 +1,8 @@
 #include "Strategic.h"
-#include "AggressiveAgentStrategy.h"
 
 namespace Gaming
 {
-    Strategic::STRATEGIC_ID = 'T';
+    const char Strategic::STRATEGIC_ID = 'T';
 
     Strategic::Strategic(const Game &g, const Position &p, double energy, Strategy *s):Agent(g,p,energy)
     {
@@ -27,4 +26,6 @@ namespace Gaming
             aggro->setEnergy(__energy);
         return __strategy->operator()(s);
     }
+
+
 }

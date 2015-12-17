@@ -2,7 +2,7 @@
 
 namespace Gaming
 {
-    Simple::SIMPLE_ID = 'S';
+    const char Simple::SIMPLE_ID = 'S';
 
 
     void Simple::print(std::ostream &os) const

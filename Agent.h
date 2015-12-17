@@ -5,8 +5,8 @@
 #ifndef PA5GAME_AGENT_H
 #define PA5GAME_AGENT_H
 
-#include "Game.h"
 #include "Piece.h"
+#include "Resource.h"
 
 namespace Gaming {
 

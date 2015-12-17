@@ -28,12 +28,12 @@ namespace Gaming {
 
         bool isViable() const override final { return !isFinished() && __capacity > 0.0; }
 
-        ActionType takeTurn(const Surroundings &s) const override{}
+        ActionType takeTurn(const Surroundings &s) const override{return STAY;}
 
         // note: these won't be called while resources don't move
         Piece &operator*(Piece &other) override final;
         Piece &interact(Agent *) override final;
-        Piece &interact(Resource *other) override final{other->finish();} // note: no interaction between resources
+        Piece &interact(Resource *other) override final{return *this;} // note: no interaction between resources
     };
 
 }
