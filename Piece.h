@@ -30,10 +30,12 @@ namespace Gaming {
 
         virtual void print(std::ostream &os) const = 0;
 
+        static unsigned int newId();
         void finish() { __finished = true; }
-        bool isFinished() const { return __finished; }
+
 
     public:
+        bool isFinished() const { return __finished; }
         Piece(const Game &g, const Position &p);
         virtual ~Piece(){}
 

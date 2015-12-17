@@ -86,6 +86,8 @@ void test_piece_print(ErrorContext &ec, unsigned int numRuns) {
             Position p3(0, 2);
             Advantage a(g, p3, 3);
 
+
+
             std::stringstream ss;
             ss << s << ' ' << t << ' ' << f << ' ' << a;
 

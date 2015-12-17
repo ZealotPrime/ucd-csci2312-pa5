@@ -18,6 +18,7 @@ namespace Gaming
         __width=MIN_WIDTH;
         __height=MIN_HEIGHT;
         __verbose=false;
+        __grid.resize(toLinear(Position(__height,__width)));
     }
 
     Game::Game(unsigned width, unsigned height, bool manual)
@@ -35,6 +36,7 @@ namespace Gaming
         __width=width;
         __height=height;
         __verbose= false;
+        __grid.resize(toLinear(Position(__height,__width)));
         if(!manual)
             populate();
 
@@ -54,7 +56,8 @@ namespace Gaming
     Game::~Game()
     {
         for(auto seeker=__grid.begin();seeker!=__grid.end();++seeker)
-            delete *seeker;
+            if(*seeker!= nullptr)
+                delete *seeker;
     }
 
     unsigned int Game::getNumPieces() const
@@ -117,9 +120,9 @@ namespace Gaming
 
     void Game::checkBounds(const Position &position)
     {
-        if(position.x<MIN_HEIGHT||position.y<MIN_WIDTH)
+        if(position.x<0||position.y<0)
             throw InsufficientDimensionsEx(MIN_WIDTH,MIN_HEIGHT,position.y,position.x);
-        if(position.x>__height||position.y>__width)
+        if(position.x>=__height||position.y>=__width)
             throw OutOfBoundsEx(__width,__height,position.y,position.x);
     }
 
@@ -314,8 +317,131 @@ namespace Gaming
             }
             os<<std::endl;
         }
+        os<<"Status: "<<game.__status<<std::endl;
+        return os;
     }
 
 
+    void Game::populate()
+    {
+        std::default_random_engine gen;
+        __numInitAgents = (__width * __height) / NUM_INIT_AGENT_FACTOR;
+        __numInitResources = (__width * __height) / NUM_INIT_RESOURCE_FACTOR;
+        unsigned int numStrategic = __numInitAgents / 2;
+        unsigned int numSimple = __numInitAgents - numStrategic;
+        unsigned int numAdvantages = __numInitResources / 4;
+        unsigned int numFood = __numInitResources - numAdvantages;
 
+        for(int i =0; i < numStrategic; ++i)
+        {
+            unsigned int x = gen() % __height;
+            unsigned int y = gen() % __height;
+            while (__grid[x * __width + y] != nullptr)
+            {
+                x = gen() % __height;
+                y = gen() % __height;
+            }
+            addStrategic(x,y);
+        }
+
+        for(int i =0; i < numSimple; ++i)
+        {
+            unsigned int x = gen() % __height;
+            unsigned int y = gen() % __height;
+            while (__grid[x * __width + y] != nullptr)
+            {
+                x = gen() % __height;
+                y = gen() % __height;
+            }
+            addSimple(x,y);
+        }
+
+        for(int i =0; i < numAdvantages; ++i)
+        {
+            unsigned int x = gen() % __height;
+            unsigned int y = gen() % __height;
+            while (__grid[x * __width + y] != nullptr)
+            {
+                x = gen() % __height;
+                y = gen() % __height;
+            }
+            addAdvantage(x,y);
+        }
+
+        for(int i =0; i < numFood; ++i)
+        {
+            unsigned int x = gen() % __height;
+            unsigned int y = gen() % __height;
+            while (__grid[x * __width + y] != nullptr)
+            {
+                x = gen() % __height;
+                y = gen() % __height;
+            }
+            addFood(x,y);
+        }
+    }
+
+    void Game::round()
+    {
+        for(int i=0;i<__grid.size();++i)
+        {
+            if(__grid[i]!= nullptr&&!__grid[i]->getTurned())
+            {
+                Position currPos(i/__width,i%__width);
+                ActionType action =__grid[i]->takeTurn(getSurroundings(currPos));
+                __grid[i]->setTurned(true);
+                unsigned int newPos=toLinear(move(currPos,action));
+                if(action!=STAY&&isLegal(action, currPos))
+                {
+                    Piece* temp= nullptr;
+                    if(__grid[newPos]!= nullptr)
+                    {
+                        temp = &(__grid[i]->operator*(*__grid[newPos]));
+                        if(__grid[newPos]->isFinished())
+                        {
+                            delete __grid[newPos];
+                            __grid[newPos]= nullptr;
+                            if(!__grid[i]->isFinished())
+                            {
+                                __grid[newPos]=temp;
+                            }
+                        }
+                        if(__grid[i]->isFinished())
+                        {
+                            delete __grid[i];
+                            __grid[i]= nullptr;
+                        }
+
+                    }
+                    else
+                    {
+                        __grid[newPos]=__grid[i];
+                        __grid[i]= nullptr;
+                    }
+                }
+            }
+            if(__verbose)
+                std::cout<<*this;
+        }
+        ++__round;
+    }
+
+    unsigned int Game::toLinear(const Position &bi)
+    {
+        return (bi.x*__width+bi.y);
+    }
+
+    Position Game::toPosition(unsigned int lin)
+    {
+        return Position(lin/__width,lin%__width);
+    }
+
+    void Game::play(bool verbose)
+    {
+        __verbose=verbose;
+        while(__round<50)
+        {
+            round();
+        }
+    }
 }

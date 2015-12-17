@@ -51,7 +51,7 @@ namespace Gaming {
 
         Game();
         Game(unsigned width, unsigned height, bool manual = true); // note: manual population by default
-        Game(const Game &another);
+        //Game(const Game &another);
         Game &operator=(const Game &other) = delete;
         ~Game();
 
@@ -83,6 +83,9 @@ namespace Gaming {
         static const Position randomPosition(const std::vector<int> &positions) { // note: from Surroundings as an array
             return __posRandomizer(positions);
         }
+
+        unsigned int toLinear(const Position& bi);
+        Position toPosition(unsigned int lin);
 
         bool isLegal(const ActionType &ac, const Position &pos) const;
         const Position move(const Position &pos, const ActionType &ac) const; // note: assumes legal, use with isLegal()
